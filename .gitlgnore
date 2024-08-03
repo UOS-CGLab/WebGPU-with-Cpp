@@ -20,6 +20,10 @@ build.ninja
 cmake_install.cmake
 CMakeCache 2.txt
 build 2.ninja
+.idea/
+.vscode/
+temp/
+.DS_Store
 
 # Ignore logs and databases
 *.log
