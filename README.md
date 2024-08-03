@@ -1,4 +1,5 @@
 Need Dawn to run https://dawn.googlesource.com/dawn
+Need glfw3 to run https://www.glfw.org
 
 
 TODO:
