@@ -50,11 +50,11 @@ private:
     WGPUSurface surface;
     WGPUDevice device;
     WGPUQueue queue;
-    WGPURenderPipeline pipeline;
-    WGPUBuffer pointBuffer;
-    WGPUBuffer indexBuffer;
+    WGPURenderPipeline pipeline;    // unused
+    WGPUBuffer pointBuffer;         // unused
+    WGPUBuffer indexBuffer;         // unused
     WGPUTextureFormat surfaceFormat;
-    uint32_t indexCount;
+    uint32_t indexCount;            // unused
 
     int depth;
     std::string asset_name;

@@ -138,92 +138,124 @@ bool Application::Initialize() {
 }
 
 void Application::Terminate() {
-    wgpuBufferRelease(pointBuffer);
-    wgpuBufferRelease(indexBuffer);
-    wgpuRenderPipelineRelease(pipeline);
-    wgpuSurfaceUnconfigure(surface);
-    wgpuQueueRelease(queue);
-    wgpuSurfaceRelease(surface);
+//    wgpuBufferRelease(pointBuffer);
+//    wgpuBufferRelease(indexBuffer);
+//    wgpuRenderPipelineRelease(pipeline);
+//    wgpuSurfaceUnconfigure(surface);
+//    wgpuQueueRelease(queue);
+//    wgpuSurfaceRelease(surface);
+//    wgpuDeviceRelease(device);
+//    glfwDestroyWindow(window);
+//    glfwTerminate();
+
+    for (auto& buffer : buffers.connectivity) {
+        wgpuBufferRelease(buffer);
+    }
+    for (auto& buffer : buffers.vertexBuffers) {
+        wgpuBufferRelease(buffer);
+    }
+    for (auto& buffer : buffers.indexBuffers) {
+        wgpuBufferRelease(buffer);
+    }
+    for (auto& buffer : buffers.colorStorageBuffer) {
+        wgpuBufferRelease(buffer);
+    }
+    wgpuBufferRelease(buffers.base_index);
+    wgpuBufferRelease(buffers.uniformBuffer);
+    wgpuBufferRelease(buffers.resolveBuffer);
+    wgpuBufferRelease(buffers.resultBuffer);
+    wgpuBindGroupRelease(bindGroups.bindGroup_Face);
+    wgpuBindGroupRelease(bindGroups.bindGroup_Edge);
+    wgpuBindGroupRelease(bindGroups.bindGroup_Vertex);
+    for (auto& bindGroup : bindGroups.changedBindGroups) {
+        wgpuBindGroupRelease(bindGroup);
+    }
+    for (auto& bindGroup : bindGroups.fixedBindGroups) {
+        wgpuBindGroupRelease(bindGroup);
+    }
+    wgpuBindGroupRelease(bindGroups.OrdinaryPointfixedBindGroup);
+    wgpuBindGroupRelease(bindGroups.animeBindGroup);
     wgpuDeviceRelease(device);
+    wgpuSurfaceRelease(surface);
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
 void Application::MainLoop() {
-    glfwPollEvents();
-
-    // Get the next target texture view
-    WGPUTextureView targetView = GetNextSurfaceTextureView();
-    if (!targetView) return;
-
-    // Create a command encoder for the draw call
-    WGPUCommandEncoderDescriptor encoderDesc = {};
-    encoderDesc.nextInChain = nullptr;
-    encoderDesc.label = "My command encoder";
-    WGPUCommandEncoder encoder = wgpuDeviceCreateCommandEncoder(device, &encoderDesc);
-
-    // Create the render pass that clears the screen with our color
-    WGPURenderPassDescriptor renderPassDesc = {};
-    renderPassDesc.nextInChain = nullptr;
-
-    // The attachment part of the render pass descriptor describes the target texture of the pass
-    WGPURenderPassColorAttachment renderPassColorAttachment = {};
-    renderPassColorAttachment.view = targetView;
-    renderPassColorAttachment.resolveTarget = nullptr;
-    renderPassColorAttachment.loadOp = WGPULoadOp_Clear;
-    renderPassColorAttachment.storeOp = WGPUStoreOp_Store;
-    renderPassColorAttachment.clearValue = WGPUColor{ 0.05, 0.05, 0.05, 1.0 };
-#ifndef WEBGPU_BACKEND_WGPU
-    renderPassColorAttachment.depthSlice = WGPU_DEPTH_SLICE_UNDEFINED;
-#endif // NOT WEBGPU_BACKEND_WGPU
-
-    renderPassDesc.colorAttachmentCount = 1;
-    renderPassDesc.colorAttachments = &renderPassColorAttachment;
-    renderPassDesc.depthStencilAttachment = nullptr;
-    renderPassDesc.timestampWrites = nullptr;
-
-    WGPURenderPassEncoder renderPass = wgpuCommandEncoderBeginRenderPass(encoder, &renderPassDesc);
-
-    // Select which render pipeline to use
-    wgpuRenderPassEncoderSetPipeline(renderPass, pipeline);
-
-    // Set vertex buffer while encoding the render pass
-    wgpuRenderPassEncoderSetVertexBuffer(renderPass, 0, pointBuffer, 0, wgpuBufferGetSize(pointBuffer));
-
-    // The second argument must correspond to the choice of uint16_t or uint32_t
-    // we've done when creating the index buffer.
-    wgpuRenderPassEncoderSetIndexBuffer(renderPass, indexBuffer, WGPUIndexFormat_Uint16, 0, wgpuBufferGetSize(indexBuffer));
-
-    // Replace `draw()` with `drawIndexed()` and `vertexCount` with `indexCount`
-    // The extra argument is an offset within the index buffer.
-    wgpuRenderPassEncoderDrawIndexed(renderPass, indexCount, 1, 0, 0, 0);
-
-    wgpuRenderPassEncoderEnd(renderPass);
-    wgpuRenderPassEncoderRelease(renderPass);
-
-    // Encode and submit the render pass
-    WGPUCommandBufferDescriptor cmdBufferDescriptor = {};
-    cmdBufferDescriptor.nextInChain = nullptr;
-    cmdBufferDescriptor.label = "Command buffer";
-    WGPUCommandBuffer command = wgpuCommandEncoderFinish(encoder, &cmdBufferDescriptor);
-    wgpuCommandEncoderRelease(encoder);
-
-//    std::cout << "Submitting command..." << std::endl;
-    wgpuQueueSubmit(queue, 1, &command);
-    wgpuCommandBufferRelease(command);
-//    std::cout << "Command submitted." << std::endl;
-
-    // At the end of the frame
-    wgpuTextureViewRelease(targetView);
-#ifndef __EMSCRIPTEN__
-    wgpuSurfacePresent(surface);
-#endif
-
-#if defined(WEBGPU_BACKEND_DAWN)
-    wgpuDeviceTick(device);
-#elif defined(WEBGPU_BACKEND_WGPU)
-    wgpuDevicePoll(device, false, nullptr);
-#endif
+//    glfwPollEvents();
+//
+//    // Get the next target texture view
+//    WGPUTextureView targetView = GetNextSurfaceTextureView();
+//    if (!targetView) return;
+//
+//    // Create a command encoder for the draw call
+//    WGPUCommandEncoderDescriptor encoderDesc = {};
+//    encoderDesc.nextInChain = nullptr;
+//    encoderDesc.label = "My command encoder";
+//    WGPUCommandEncoder encoder = wgpuDeviceCreateCommandEncoder(device, &encoderDesc);
+//
+//    // Create the render pass that clears the screen with our color
+//    WGPURenderPassDescriptor renderPassDesc = {};
+//    renderPassDesc.nextInChain = nullptr;
+//
+//    // The attachment part of the render pass descriptor describes the target texture of the pass
+//    WGPURenderPassColorAttachment renderPassColorAttachment = {};
+//    renderPassColorAttachment.view = targetView;
+//    renderPassColorAttachment.resolveTarget = nullptr;
+//    renderPassColorAttachment.loadOp = WGPULoadOp_Clear;
+//    renderPassColorAttachment.storeOp = WGPUStoreOp_Store;
+//    renderPassColorAttachment.clearValue = WGPUColor{ 0.05, 0.05, 0.05, 1.0 };
+//#ifndef WEBGPU_BACKEND_WGPU
+//    renderPassColorAttachment.depthSlice = WGPU_DEPTH_SLICE_UNDEFINED;
+//#endif // NOT WEBGPU_BACKEND_WGPU
+//
+//    renderPassDesc.colorAttachmentCount = 1;
+//    renderPassDesc.colorAttachments = &renderPassColorAttachment;
+//    renderPassDesc.depthStencilAttachment = nullptr;
+//    renderPassDesc.timestampWrites = nullptr;
+//
+//    WGPURenderPassEncoder renderPass = wgpuCommandEncoderBeginRenderPass(encoder, &renderPassDesc);
+//
+//    // Select which render pipeline to use
+//    wgpuRenderPassEncoderSetPipeline(renderPass, pipeline);
+//
+//    // Set vertex buffer while encoding the render pass
+//    wgpuRenderPassEncoderSetVertexBuffer(renderPass, 0, pointBuffer, 0, wgpuBufferGetSize(pointBuffer));
+//
+//    // The second argument must correspond to the choice of uint16_t or uint32_t
+//    // we've done when creating the index buffer.
+//    wgpuRenderPassEncoderSetIndexBuffer(renderPass, indexBuffer, WGPUIndexFormat_Uint16, 0, wgpuBufferGetSize(indexBuffer));
+//
+//    // Replace `draw()` with `drawIndexed()` and `vertexCount` with `indexCount`
+//    // The extra argument is an offset within the index buffer.
+//    wgpuRenderPassEncoderDrawIndexed(renderPass, indexCount, 1, 0, 0, 0);
+//
+//    wgpuRenderPassEncoderEnd(renderPass);
+//    wgpuRenderPassEncoderRelease(renderPass);
+//
+//    // Encode and submit the render pass
+//    WGPUCommandBufferDescriptor cmdBufferDescriptor = {};
+//    cmdBufferDescriptor.nextInChain = nullptr;
+//    cmdBufferDescriptor.label = "Command buffer";
+//    WGPUCommandBuffer command = wgpuCommandEncoderFinish(encoder, &cmdBufferDescriptor);
+//    wgpuCommandEncoderRelease(encoder);
+//
+////    std::cout << "Submitting command..." << std::endl;
+//    wgpuQueueSubmit(queue, 1, &command);
+//    wgpuCommandBufferRelease(command);
+////    std::cout << "Command submitted." << std::endl;
+//
+//    // At the end of the frame
+//    wgpuTextureViewRelease(targetView);
+//#ifndef __EMSCRIPTEN__
+//    wgpuSurfacePresent(surface);
+//#endif
+//
+//#if defined(WEBGPU_BACKEND_DAWN)
+//    wgpuDeviceTick(device);
+//#elif defined(WEBGPU_BACKEND_WGPU)
+//    wgpuDevicePoll(device, false, nullptr);
+//#endif
 }
 
 bool Application::IsRunning() {
