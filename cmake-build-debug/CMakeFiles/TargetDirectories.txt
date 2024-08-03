@@ -1,7 +1,0 @@
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/CMakeFiles/WebGPU-with-Cpp.dir
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/CMakeFiles/main_c.dir
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/glfw3webgpu/CMakeFiles/glfw3webgpu.dir
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/glfw3webgpu/CMakeFiles/edit_cache.dir
-/Users/spoof_uos/Library/Mobile Documents/com~apple~CloudDocs/Univ./CGLab/WebGPU-with-Cpp/cmake-build-debug/glfw3webgpu/CMakeFiles/rebuild_cache.dir
