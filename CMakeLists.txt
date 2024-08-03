@@ -20,14 +20,21 @@ add_executable(${PROJECT_NAME}
 )
 
 # add shaders to build directory
+# Set shaders directory
 set(SHADERS_DIR ${CMAKE_SOURCE_DIR}/src/shaders)
+
+# Get list of all shader files
 file(GLOB SHADER_FILES "${SHADERS_DIR}/*")
-foreach(SHADER_FILE ${SHADER_FILES})
-    add_custom_command(
-            TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy ${SHADER_FILE} $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders/
-    )
-endforeach()
+
+# Custom target to copy shaders
+add_custom_target(copy_shaders ALL
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders/
+        COMMAND ${CMAKE_COMMAND} -E copy ${SHADER_FILES} $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders/
+        DEPENDS ${SHADER_FILES}
+)
+
+# Ensure shaders are copied after the build
+add_dependencies(${PROJECT_NAME} copy_shaders)
 
 target_link_libraries(${PROJECT_NAME}
         dawn::webgpu_dawn
