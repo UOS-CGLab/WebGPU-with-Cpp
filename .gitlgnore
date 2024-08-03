@@ -1,0 +1,60 @@
+# Ignore CMake build directory
+cmake-build-debug/
+
+# Ignore temporary files
+temp/
+
+# Ignore build files
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# Ignore cache and generated files
+CMakeCache.txt
+CMakeFiles/
+build.ninja
+cmake_install.cmake
+CMakeCache 2.txt
+build 2.ninja
+
+# Ignore logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Ignore compiled dynamic libraries
+*.dylib
+
+# Ignore compiled static libraries
+*.lib
+*.a
+
+# Ignore compiled object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Ignore C++ specific files
+*.d
+
+# Ignore directories
+build/
+dist/
+.moc/
+.qmake.stash/
+
+# Ignore backups
+*~
+
+# Ignore application specific files
+cmake-build-debug/dawn-prefix/
+cmake-build-debug/external/
+cmake-build-debug/glfw3webgpu/
+cmake-build-debug/shaders/
+cmake-build-debug/webgpu/
+test/LearnWebGPU-Code/
