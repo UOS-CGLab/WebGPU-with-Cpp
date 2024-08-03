@@ -3,7 +3,11 @@ set(CMAKE_CXX_STANDARD 23)
 project(WebGPU-with-Cpp)
 
 # dawn
-set(Dawn_DIR "/Users/spoof_uos/workspace/dawn/install/Release/lib/cmake/Dawn")
+if(DEFINED ENV{DAWN_DIR})
+    set(Dawn_DIR $ENV{DAWN_DIR})
+else()
+    message(FATAL_ERROR "DAWN_DIR environment variable is not set")
+endif()
 find_package(Dawn REQUIRED)
 find_package(glfw3 REQUIRED)
 
