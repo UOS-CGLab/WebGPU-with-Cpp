@@ -15,8 +15,10 @@ add_executable(${PROJECT_NAME}
         main.cpp
         src/webgpu-utils.h
         src/webgpu-utils.cpp
-        src/Application.cpp
+        src/Application2.cpp # src/Application.cpp
         src/Application.h
+        src/createFVertices.cpp
+        src/createFVertices.h
 )
 
 # add shaders to build directory
@@ -60,15 +62,3 @@ if (EMSCRIPTEN)
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".html")
     target_link_options(${PROJECT_NAME} PRIVATE -sASYNCIFY)
 endif()
-
-
-
-
-
-
-
-
-
-add_executable(main_c main_c.c)
-target_link_libraries(main_c glfw)
-target_link_libraries(main_c dawn::webgpu_dawn)

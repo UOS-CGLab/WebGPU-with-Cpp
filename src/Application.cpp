@@ -1,6 +1,7 @@
 #include "Application.h"
 #include <glfw3webgpu.h>
 #include "webgpu-utils.h"
+#include "createFvertices.h"
 
 #include <dawn/webgpu.h>
 #ifdef WEBGPU_BACKEND_WGPU
@@ -48,17 +49,12 @@ void Application::cursorPosCallback(GLFWwindow* window, double xpos, double ypos
     std::cout << "Mouse Position: (" << xpos << ", " << ypos << ")" << std::endl;
 }
 
-std::string readFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        throw std::runtime_error("Failed to open file: " + filename);
-    }
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
-}
-
 bool Application::Initialize() {
+
+    depth = 4;
+
+    asset_name = "monsterfrog";
+
     // Set GLFW error callback
     glfwSetErrorCallback(glfwErrorCallback);
 
@@ -69,7 +65,7 @@ bool Application::Initialize() {
     }
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // or GLFW_FALSE
     window = glfwCreateWindow(1280, 720, "Learn WebGPU", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
@@ -141,7 +137,6 @@ bool Application::Initialize() {
     InitializeBuffers();
     return true;
 }
-
 
 void Application::Terminate() {
     wgpuBufferRelease(pointBuffer);
