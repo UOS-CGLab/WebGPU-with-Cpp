@@ -71,6 +71,26 @@
 #include <GLFW/glfw3native.h>
 #endif
 
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (action == GLFW_PRESS) {
+        printf("Key Pressed: %d\n", key);
+    } else if (action == GLFW_RELEASE) {
+        printf("Key Released: %d\n", key);
+    }
+}
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (action == GLFW_PRESS) {
+        printf("Mouse Button Pressed: %d\n", button);
+    } else if (action == GLFW_RELEASE) {
+        printf("Mouse Button Released: %d\n", button);
+    }
+}
+
+void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos) {
+    printf("Mouse Position: (%.1f, %.1f)\n", xpos, ypos);
+}
+
 WGPUSurface glfwGetWGPUSurface(WGPUInstance instance, GLFWwindow* window) {
 #if WGPU_TARGET == WGPU_TARGET_MACOS
     {

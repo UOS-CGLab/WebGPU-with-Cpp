@@ -22,6 +22,32 @@
 #include <sstream>
 #include <stdexcept>
 
+// Function to print GLFW errors
+void glfwErrorCallback(int error, const char* description) {
+    std::cerr << "GLFW Error (" << error << "): " << description << std::endl;
+}
+
+// Callback functions
+void Application::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (action == GLFW_PRESS) {
+        std::cout << "Key Pressed: " << key << std::endl;
+    } else if (action == GLFW_RELEASE) {
+        std::cout << "Key Released: " << key << std::endl;
+    }
+}
+
+void Application::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (action == GLFW_PRESS) {
+        std::cout << "Mouse Button Pressed: " << button << std::endl;
+    } else if (action == GLFW_RELEASE) {
+        std::cout << "Mouse Button Released: " << button << std::endl;
+    }
+}
+
+void Application::cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+    std::cout << "Mouse Position: (" << xpos << ", " << ypos << ")" << std::endl;
+}
+
 std::string readFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -33,11 +59,27 @@ std::string readFile(const std::string& filename) {
 }
 
 bool Application::Initialize() {
-    // Open window
-    glfwInit();
+    // Set GLFW error callback
+    glfwSetErrorCallback(glfwErrorCallback);
+
+    // Initialize GLFW
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return false;
+    }
+
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     window = glfwCreateWindow(1280, 720, "Learn WebGPU", nullptr, nullptr);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return false;
+    }
+
+    glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetCursorPosCallback(window, cursorPosCallback);
 
     WGPUInstance instance = wgpuCreateInstance(nullptr);
 
@@ -79,15 +121,11 @@ bool Application::Initialize() {
     // Configure the surface
     WGPUSurfaceConfiguration config = {};
     config.nextInChain = nullptr;
-
-    // Configuration of the textures created for the underlying swap chain
     config.width = 1280;
     config.height = 720;
     config.usage = WGPUTextureUsage_RenderAttachment;
     surfaceFormat = wgpuSurfaceGetPreferredFormat(surface, adapter);
     config.format = surfaceFormat;
-
-    // And we do not need any particular view format:
     config.viewFormatCount = 0;
     config.viewFormats = nullptr;
     config.device = device;
@@ -103,6 +141,7 @@ bool Application::Initialize() {
     InitializeBuffers();
     return true;
 }
+
 
 void Application::Terminate() {
     wgpuBufferRelease(pointBuffer);
